@@ -60,8 +60,6 @@
 
 **** TODO auto-complete or company mode
 
-
-
 *** Change Case
 #+begin_src emacs-lisp
 ;(add-to-list 'load-path "c:/dev/change-case")
