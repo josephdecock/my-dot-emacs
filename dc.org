@@ -1,0 +1,208 @@
+#+TITLE:     Joe DeCock's Emacs Initialization File
+#+AUTHOR:    Joe DeCock
+#+EMAIL:     josephdecock@gmail.com
+#+DATE:      2016-07-01
+
+* Configuration
+** Paths
+ #+begin_src emacs-lisp
+   (setq load-path (cons (expand-file-name "~/.emacs.d/lisp/") load-path))
+   (cd "~/")
+ #+end_src
+
+ 
+** Package Management
+*** Setup req-package
+ #+begin_src emacs-lisp
+   (require 'package)
+   (setq package-archives '(
+                            ("org" . "http://orgmode.org/elpa/")
+                            ("melpa" . "http://melpa.org/packages/")
+                            ("elpa" . "http://tromey.com/elpa/")
+                            ("gnu" . "http://elpa.gnu.org/packages/")
+                            ;; ("marmalade" . "http://marmalade-repo.org/packages/")
+                            ))
+   (if (not (package-installed-p 'req-package))
+       (progn 
+         (package-refresh-contents)
+         (package-install 'req-package)))
+
+   (require 'req-package)
+   (setq use-package-verbose t)
+ #+end_src 
+    
+*** Interesting Packages to Try Someday
+**** Ace Window
+
+
+
+
+*** Completion
+**** Flx and Ivy
+#+begin_src emacs-lisp
+    (req-package ivy
+      :ensure t
+      :diminish ivy-mode
+      :config
+      (ivy-mode 1)
+      (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+
+    (req-package counsel
+      :ensure t
+      :config
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+
+    (req-package flx
+      :ensure t)
+
+#+end_src
+
+**** TODO auto-complete or company mode
+
+
+
+*** Change Case
+#+begin_src emacs-lisp
+;(add-to-list 'load-path "c:/dev/change-case")
+;(req-package change-case
+;  :loader :path
+;  :bind-keymap
+;  (("C-c c" . change-case-keymap)))
+#+end_src
+
+*** Which Key
+#+begin_src emacs-lisp
+  (req-package which-key
+       :ensure t
+       :diminish which-key-mode
+       :config
+       (which-key-mode))
+#+end_src
+
+*** Multipe Cursors
+#+begin_src emacs-lisp
+  ;; From Sacha Chua's dotemacs:
+  (req-package multiple-cursors
+    :ensure multiple-cursors
+    :bind
+    (("C-c m t" . mc/mark-all-like-this)
+     ("C-c m m" . mc/mark-all-like-this-dwim)
+     ("C-c m l" . mc/edit-lines)
+     ("C-c m e" . mc/edit-ends-of-lines)
+     ("C-c m a" . mc/edit-beginnings-of-lines)
+     ("C-c m n" . mc/mark-next-like-this)
+     ("C-c m p" . mc/mark-previous-like-this)
+     ("C-c m s" . mc/mark-sgml-tag-pair)
+     ("C-c m d" . mc/mark-all-like-this-in-defun)
+     ("C-M-<mouse-1>" . mc/add-cursor-on-click)
+     ))
+
+  (req-package phi-search
+    :ensure t)
+  (req-package phi-search-mc
+    :ensure t
+    :config
+    (phi-search-mc/setup-keys))
+  (req-package mc-extras
+    :ensure mc-extras
+    :config
+    (define-key mc/keymap (kbd "C-. =") 'mc/compare-chars))
+#+end_src
+
+*** TODO C#
+We need a C# mode for basic things plus omnisharp? Or do we just use
+omnisharp? What does it mean to "get omnisharp"? 
+
+
+*** Magit
+#+begin_src emacs-lisp
+  (req-package magit
+    :config (global-set-key "\C-xg" 'magit-status))
+#+end_src
+
+*** Cask
+#+begin_src emacs-lisp
+  (req-package cask :ensure t)
+#+end_src
+
+**** TODO I used emacs-list instead of emacs-lisp above, and that should have been an error that the ta
+*** Projectile
+#+begin_src emacs-lisp
+  (req-package projectile
+    :ensure t
+    :config
+    (projectile-global-mode)
+    )
+#+end_src
+
+*** TODO Company for autocompletion?
+
+*** Haskell
+#+begin_src emacs-lisp
+  (req-package haskell-mode)
+#+end_src
+
+*** Discover
+#+begin_src emacs-lisp
+  (req-package discover :ensure 't)
+#+end_src
+
+*** Finally, load all required packages
+ #+begin_src emacs-lisp
+   (req-package-finish)
+ #+end_src
+
+
+** TODO YASnippet
+
+*** Snippet for blocks of emacs lisp in my emacs org file
+** Registers
+Registers make it easy to jump to the files that I use most with
+C-x r j _
+
+An alternative seems like it would be nice. Basically I want Find File
+to have fuzzy matching looking through history of files opened and
+maybe projects (maybe I need projectile).
+
+#+begin_src emacs-lisp
+(set-register ?e (cons 'file "~/.emacs.d/dc.org"))
+(set-register ?i (cons 'file "~/org/inbox.org"))
+#+end_src
+** TODO Overlays for Org
+*** Figure out some way of not going blind when I look at TODOS 
+*** Maybe begin_src/end_src blocks could have an overlay (along with nice ways of editing them)
+
+** Paths
+#+begin_src emacs-lisp
+  (push "/home/jmdc/.cask/bin" exec-path)
+#+end_src
+
+** Org Mode
+
+#+begin_src emacs-lisp
+
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (setq org-startup-indented t)
+  (setq org-startup-truncated t)
+  (setq org-startup-folded 'content)
+  (setq org-src-tab-acts-natively t)
+  (setq org-agenda-files (list "~/org/"))
+
+#+end_src
+
+*** TODO 
+
+
+** Global Keybindings
+   #+begin_src emacs-lisp
+   (global-set-key "\C-z" 'undo)
+   #+end_src 
+
+** Global Modes
+#+begin_src emacs-lisp
+  (show-paren-mode)
+#+end_src
+
+** Misc
+(setq visible-bell t)
