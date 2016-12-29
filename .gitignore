@@ -1,3 +1,9 @@
 \#*\#
 *~
 *.elc
+session.*
+.cask
+/tramp
+/elpa
+/dc.el
+/projectile-bookmarks.eld
