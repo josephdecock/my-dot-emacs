@@ -40,22 +40,29 @@
 *** Completion
 **** Flx and Ivy
 #+begin_src emacs-lisp
-    (req-package ivy
-      :ensure t
-      :diminish ivy-mode
-      :config
-      (ivy-mode 1)
-      (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
+  ;; (req-package ivy
+  ;;   :ensure t
+  ;;   :diminish ivy-mode
+  ;;   :config
+  ;;   (ivy-mode 1)
+  ;;   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+  ;;   (setq ivy-initial-inputs-alist nil))
 
-    (req-package counsel
-      :ensure t
-      :config
-      (global-set-key (kbd "M-x") 'counsel-M-x)
-      (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+  ;; (req-package counsel
+  ;;   :ensure t
+  ;;   :config
+  ;;   (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;;   (global-set-key (kbd "C-x C-f") 'counsel-find-file))
 
-    (req-package flx
-      :ensure t)
+  ;; (req-package flx
+  ;;   :ensure t)
 
+#+end_src
+**** COMMENT Ido Mode
+#+begin_src emacs-lisp
+  (require 'ido)
+  (ido-mode t)
+  (ido-everywhere)
 #+end_src
 
 **** TODO auto-complete or company mode
@@ -203,4 +210,18 @@ maybe projects (maybe I need projectile).
 #+end_src
 
 ** Misc
+#+begin_src emacs-lisp
 (setq visible-bell t)
+
+
+(global-set-key
+     "\M-x"
+     (lambda ()
+       (interactive)
+       (call-interactively
+        (intern
+         (ido-completing-read
+          "M-x "
+          (all-completions "" obarray 'commandp))))))
+
+#+end_src

@@ -9,7 +9,8 @@
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
    (quote
-    ((nameless-current-name . "rdf")
+    ((nameless-current-name . "fuseki")
+     (nameless-current-name . "rdf")
      (eval progn
 	   (require
 	    (quote projectile))
